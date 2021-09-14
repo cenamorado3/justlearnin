@@ -1,3 +1,8 @@
+# this is a work of fiction and not meant to be taken as empirical data or research
+# the data can be found online, for free, thank you UCI -> https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/
+ 
+# use machine learning to find out what makes wine good.
+
 # To add a new cell, type '# %%'
 # To add a new markdown cell, type '# %% [markdown]'
 # %%
