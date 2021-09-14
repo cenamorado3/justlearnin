@@ -1,57 +1,120 @@
-#convert to NB
+# To add a new cell, type '# %%'
+# To add a new markdown cell, type '# %% [markdown]'
+# %% [markdown]
+# <strong><h1>SciKit Learn Iris Tutorial</h1></strong>
+# %% [markdown]
+# <h3>Imports</h3>
 
-<strong><h1>SciKit Learn Iris Tutorial</h1></strong>
-<h3>Imports</h3>
+# %%
 from sklearn import datasets
 from sklearn import svm
 import matplotlib.pyplot as plt
 from sklearn import datasets, svm, metrics
 from sklearn.model_selection import train_test_split
 
+# %% [markdown]
+# 
+# %% [markdown]
+# 
+# %% [markdown]
+# <h3>Load Dataset</h3>
 
-<h3>Load Dataset</h3>
+# %%
 iris = datasets.load_iris()
 digits = datasets.load_digits()
-Digits data output
+
+# %% [markdown]
+# Digits data output
+
+# %%
 digits['data'][0]
+
+
+# %%
 digits['target']
+
+
+# %%
 #digits['images']
-<h3>Support Vector Classification</h3>
-<p>Platt Scaling/Calibraton
 
-Just notes to look into at later time for a more indepth understanding. Surface level definitionm is a transformative function on a classification model into a probability distribution over a class. I don't know math. Or whether this is actually used in this implementation of SVM
+# %% [markdown]
+# <h3>Support Vector Classification</h3>
+# %% [markdown]
+# <p>Platt Scaling/Calibraton
+# 
+# Just notes to look into at later time for a more indepth understanding. Surface level definitionm is a transformative function on a classification model into a probability distribution over a class. I don't know math. Or whether this is actually used in this implementation of SVM
+# 
+# ${\mathrm {P}}(y=1|x)={\frac {1}{1+\exp(Af(x)+B)}}$
+# %% [markdown]
+# 
 
-${\mathrm {P}}(y=1|x)={\frac {1}{1+\exp(Af(x)+B)}}$
-
+# %%
 clf = svm.SVC(gamma=.001, C=100.0)
-Fit the classifier to the model
+
+# %% [markdown]
+# Fit the classifier to the model
+
+# %%
 clf.fit(digits['data'][:-2], digits['target'][:-2]) #save the last element in the slice for prediction
-<h1>Prediction</h1>
+
+# %% [markdown]
+# <h1>Prediction</h1>
+
+# %%
 pred = clf.predict(digits['data'][:-1])#predict the last item in the data set
-Display the last image
+
+# %% [markdown]
+# Display the last image
+
+# %%
 plt.imshow(digits['images'][-1], cmap=plt.cm.gray_r, interpolation='nearest')
+
+
+# %%
 pred
-<h1>Classification 2.0</h1>
-reshape
+
+# %% [markdown]
+# <h1>Classification 2.0</h1>
+# %% [markdown]
+# reshape
+
+# %%
 n_samples = len(digits['images'])
 print(n_samples)
 data = digits['images'].reshape((n_samples), -1) #takes a tupe, (n_samples) 1797 in this case....it would be 1 dimensional?
 data #looks the same as the orginal shape?
-Reclassify without the C, the regularization paramater
+
+# %% [markdown]
+# Reclassify without the C, the regularization paramater
+
+# %%
 svc = svm.SVC(gamma=.001)
 X_train, X_test, y_train, y_test = train_test_split(data, digits.target, test_size=0.5, shuffle=True) #50-50 trst_train split
 
+
+# %%
 svc.fit(X_train, y_train) #fit or learn against X/y_train
 svc_pred = clf.predict(X_test) #using that data, predict X/y_test
+
+
+# %%
 _, axes = plt.subplots(nrows=1, ncols=4, figsize=(10, 3))
 for ax, image, prediction in zip(axes, X_test, svc_pred):
     ax.set_axis_off()
     image = image.reshape(8, 8)
     ax.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
     ax.set_title(f'Prediction: {prediction}')
-<h2>Classification Report</h2>
+
+# %% [markdown]
+# <h2>Classification Report</h2>
+
+# %%
 print(metrics.classification_report(y_test,svc_pred))
-<h2>Confusion Matrix</h2>
+
+# %% [markdown]
+# <h2>Confusion Matrix</h2>
+
+# %%
 disp = metrics.plot_confusion_matrix(clf, X_test, y_test)
 disp.figure_.suptitle("Confusion Matrix")
 print(f"Confusion matrix:\n{disp.confusion_matrix}")
